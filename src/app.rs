@@ -14,7 +14,7 @@ pub async fn run() -> Result<App, Box<dyn std::error::Error>> {
         } => match node_name {
             Some(node_name) => match commands {
                 Some(command) => match command {
-                    NodeCommands::Qemu { vmid, commands } => match vmid {
+                    NodeCommands::Qemus { vmid, commands } => match vmid {
                         Some(vmid) => match commands {
                             Some(command) => match command {
                                 QemuCommands::Status => {

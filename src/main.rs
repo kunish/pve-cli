@@ -6,7 +6,9 @@ mod model;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    dotenv().ok();
+    if cfg!(debug_assertions) {
+        dotenv().ok();
+    }
 
     app::run().await?;
 

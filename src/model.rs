@@ -25,7 +25,7 @@ pub enum Commands {
 
 #[derive(Debug, Subcommand)]
 pub enum NodeCommands {
-    Qemu {
+    Qemus {
         vmid: Option<String>,
         #[clap(subcommand)]
         commands: Option<QemuCommands>,
