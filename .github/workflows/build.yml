@@ -22,12 +22,14 @@ jobs:
         run: |
           cargo build --release
 
-      - uses: actions/upload-artifact@v3
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: pve-cli
           path: target/release/pve-cli
 
       - name: create github release
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: target/release/pve-cli
