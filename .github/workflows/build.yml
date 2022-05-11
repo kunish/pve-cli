@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: build artifacts
+        run: |
+          cargo build --release
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: pve-cli
+          path: target/release/pve-cli
+
+      - name: create github release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/pve-cli
