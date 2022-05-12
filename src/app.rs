@@ -1,8 +1,9 @@
 use crate::api::{get_client, get_node, get_nodes, get_qemu, get_qemu_status, get_qemus};
 use crate::model::{App, Commands, NodeCommands, QemuCommands};
+use anyhow::Result;
 use clap::Parser;
 
-pub async fn run() -> Result<App, Box<dyn std::error::Error>> {
+pub async fn run() -> Result<App> {
     let app = App::parse();
 
     let client = get_client(&app).await?;
@@ -20,6 +21,8 @@ pub async fn run() -> Result<App, Box<dyn std::error::Error>> {
                                 QemuCommands::Status => {
                                     let qemus =
                                         get_qemu_status(&client, &app, node_name, vmid).await?;
+
+                                    println!("{}", serde_json::to_string_pretty(&qemus)?);
                                 }
                             },
                             None => {

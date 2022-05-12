@@ -1,8 +1,9 @@
 use crate::model::{APIResult, App, Node, NodeIndex, Qemu, QemuIndex};
+use anyhow::Result;
 use reqwest::Client;
 use serde_json::json;
 
-pub async fn get_client(app: &App) -> Result<Client, Box<dyn std::error::Error>> {
+pub async fn get_client(app: &App) -> Result<Client> {
     let ticket_resp = reqwest::ClientBuilder::new()
         .danger_accept_invalid_certs(true)
         .build()?
@@ -34,11 +35,7 @@ pub async fn get_client(app: &App) -> Result<Client, Box<dyn std::error::Error>>
     Ok(client)
 }
 
-pub async fn get_node(
-    client: &Client,
-    app: &App,
-    node_name: &String,
-) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+pub async fn get_node(client: &Client, app: &App, node_name: &String) -> Result<Vec<String>> {
     Ok(client
         .get(format!("{}/nodes/{}", app.endpoint, node_name))
         .send()
@@ -51,10 +48,7 @@ pub async fn get_node(
         .collect())
 }
 
-pub async fn get_nodes(
-    client: &Client,
-    app: &App,
-) -> Result<Vec<Node>, Box<dyn std::error::Error>> {
+pub async fn get_nodes(client: &Client, app: &App) -> Result<Vec<Node>> {
     Ok(client
         .get(format!("{}/nodes", app.endpoint))
         .send()
@@ -69,7 +63,7 @@ pub async fn get_qemu(
     app: &App,
     node_name: &String,
     vmid: &String,
-) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+) -> Result<Vec<String>> {
     Ok(client
         .get(format!(
             "{}/nodes/{}/qemu/{}",
@@ -85,11 +79,7 @@ pub async fn get_qemu(
         .collect())
 }
 
-pub async fn get_qemus(
-    client: &Client,
-    app: &App,
-    node_name: &String,
-) -> Result<Vec<Qemu>, Box<dyn std::error::Error>> {
+pub async fn get_qemus(client: &Client, app: &App, node_name: &String) -> Result<Vec<Qemu>> {
     Ok(client
         .get(format!("{}/nodes/{}/qemu", app.endpoint, node_name))
         .send()
@@ -104,7 +94,7 @@ pub async fn get_qemu_status(
     app: &App,
     node_name: &String,
     vmid: &String,
-) -> Result<Vec<Qemu>, Box<dyn std::error::Error>> {
+) -> Result<Vec<Qemu>> {
     Ok(client
         .get(format!(
             "{}/nodes/{}/qemu/{}/status",

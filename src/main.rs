@@ -1,3 +1,4 @@
+use anyhow::Result;
 use dotenv::dotenv;
 
 mod api;
@@ -5,7 +6,7 @@ mod app;
 mod model;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> Result<()> {
     if cfg!(debug_assertions) {
         dotenv().ok();
     }
